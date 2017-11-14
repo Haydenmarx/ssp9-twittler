@@ -2,26 +2,236 @@
 <html>
   <head>
     <script src="jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="data_generator.js"></script>
+    <style>
+      body {
+        background      : #e2e1e1d5;
+        height          : 90vh;
+      }
+
+      #container {
+        width           : 600px;
+        margin          : auto;
+        background      : rgba(163, 185, 247, 0.337);
+        min-height      : 100%;
+        padding-bottom  : 20px;
+      }
+
+      #tweets {
+        width           : 80%;
+        margin          : auto auto;
+        padding-left    : 0px;
+      }
+
+      .tweet {
+        margin          : 10px auto 10px auto;
+        padding         : 2px;
+        border          : 2px solid black;
+        border-radius   : 10px;
+        list-style-type : none;
+      }
+
+      .tweet:hover {
+        background      : rgba(255, 255, 66, 0.438);
+      }
+
+      #home {
+        text-align      : center;
+        font-size       : 2.4em; 
+        letter-spacing  : .6em; 
+      }
+
+      #home:hover {
+        text-decoration : underline;
+        cursor          : pointer;
+      }
+
+      .user {
+        font-weight     : 600;
+      }
+
+      .user:hover {
+        text-decoration : underline; 
+        cursor          : pointer;
+      }
+
+      .tweetTime {
+        text-align      : right;
+        font-style      : italic;
+        margin          : 0px 0px 2px 0px;
+        font-size       : .8em;    
+      }
+
+      #newTweets {
+        width           : 80%;
+        margin          : auto;
+        display         : block;
+        padding         : auto auto;
+        background      : rgba(0, 0, 255, 0.452);
+        border-color    : black;
+        border-radius   : 10px;
+      }
+
+      #newTweets:hover {
+       cursor           : pointer; 
+       background       : rgba(0, 0, 255, 0.226);
+      }
+
+      #logInForm {
+        padding         : 5px 5px 5px 0px;
+        height          : 25px;
+        text-align      : right;
+        background      : rgba(9, 9, 102, 0.568);
+      }
+
+      #logOutDiv {
+        padding         : 5px 5px 5px 0px;
+        height          : 25px;
+        text-align      : right;
+        background      : rgba(9, 9, 102, 0.568);
+        display         : none;
+      }
+
+      #userName {
+        font-size       : 1.2em;
+        letter-spacing  : .12em; 
+        text-align: center;
+      }
+
+      #submitTweets {
+        display         : none;
+      }
+
+      #submitTweets > textArea {
+        display         : block;
+        width           : 80%;
+        margin          : auto auto;
+        background      : rgba(255, 255, 255, 0.26);
+      }
+
+      #submitTweets > button {
+        float           : right;
+        margin-right    : 10%;
+        margin-bottom   : 30px;
+      }
+
+    </style>
   </head>
   <body>
     <script>
+      window.visitor;
+
+      function loadTweets(user) {
+        $('#tweets').empty();
+        var stream;
+        if (user !== undefined) {
+          stream = streams.users[user];
+        } else {
+          stream = streams.home
+        }
+        var index = 0;
+        while(index < stream.length){
+          var tweet = stream[index];
+          var $tweet = $('<li class="tweet"></li>');
+          var $tweetTime = moment(tweet.created_at).fromNow();
+          $tweet.html('<span class="user" id=' + tweet.user + '>@' + tweet.user + ':</span> ' +
+                      tweet.message + ' . ' +
+                      '<p id = ' + index + ' class ="tweetTime">' + $tweetTime + '</p>');
+          $('#tweets').prepend($tweet);
+          index++;
+        }
+        var currentTweets = $('#tweets').children();
+        updateTimeStamps(currentTweets, stream);
+      }
+
+      function updateTimeStamps(currentTweets, stream) {
+        Object.keys(currentTweets).forEach(function(key) {
+          if (key, Number(key) + 0 === Number(key)) {
+            var timeUpdate = currentTweets[key].lastChild;
+            var tweetId = timeUpdate.id;
+            var timeCreated = stream[tweetId].created_at;
+            timeUpdate.innerHTML = moment(timeCreated).fromNow();
+          }
+        })
+      }
+
+      function logInOut () {
+        $('#logInForm').toggle();
+        $('#logOutDiv').toggle();
+        $('#submitTweets').toggle();
+      }
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
-
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
-
+        loadTweets();        
+      });
+      
+      $('body').on('click', '#home', function(){
+        $('#newTweets').removeClass();
+        $('#newTweetsName').empty();
+        loadTweets();
       });
 
+      $('body').on('click', '#newTweets', function(){
+        if ($(this).attr('class')) {
+          loadTweets($(this).attr('class'));
+        } else {
+          loadTweets();
+        }
+      });
+
+      $('body').on('click', '.user', function(){
+        var user = $(this).context.id;
+        if (!$('#newTweets').hasClass(user)) {
+          $('#newTweets').addClass(user);
+        }
+        $('#newTweetsName').html(' from ' + user);
+        loadTweets(user);
+      });
+
+      $('body').on('submit', '#logInForm', function(e){
+        e.preventDefault();
+        window.visitor = $('#userNameInput').val();
+        if (streams.users[window.visitor] === undefined) {
+          streams.users[window.visitor] = [];
+        }
+        $('#userName').text('Welcome, ' + window.visitor);
+        logInOut ();
+      })
+
+      $('body').on('click', '#logOut', function(e){
+        logInOut ();
+        window.visitor = undefined;
+      })
+
+      $('body').on('submit', '#submitTweets', function(e){
+        e.preventDefault();
+        var yourTweet = $(this).find('textArea');
+        writeTweet(yourTweet.val());
+        yourTweet.val('');
+        loadTweets();
+      })
+
     </script>
+    <div id="container">
+      <form id="logInForm">
+        <label for="userNameInput">Username: </label>
+        <input id="userNameInput" type="text" required>
+        <button>Log In</button>
+      </form>
+      <div id="logOutDiv">
+          <span id='userName'></span>
+          <button id="logOut">Log Out</button>
+      </div>
+      <h1 id="home">Twitter</h1> 
+      <form id="submitTweets">
+        <label></label>
+        <textArea></textArea>
+        <button>Tweet!</button>
+      </form>
+      <button id="newTweets">More New Tweets<span id='newTweetsName'></span>!</button>
+      <ol id="tweets">
+      </ol>
+    </div>
   </body>
 </html>

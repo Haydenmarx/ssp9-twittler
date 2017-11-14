@@ -65,5 +65,8 @@ var writeTweet = function(message){
   var tweet = {};
   tweet.user = visitor;
   tweet.message = message;
+  //added this in so there wouldn't be an undefined element.
+  tweet.created_at = new Date();
+  //
   addTweet(tweet);
 };

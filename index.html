@@ -30,6 +30,7 @@
         border          : 2px solid black;
         border-radius   : 10px;
         list-style-type : none;
+        overflow-wrap   : break-word;
       }
 
       .tweet:hover {
@@ -96,24 +97,51 @@
       #userName {
         font-size       : 1.2em;
         letter-spacing  : .12em; 
-        text-align: center;
+        text-align      : center;
       }
 
       #submitTweets {
         display         : none;
+        position        : relative;
+        overflow        : hidden;
       }
 
       #submitTweets > textArea {
         display         : block;
-        width           : 80%;
+        max-width       : 80%;
+        min-width       : 80%;
+        height          : 101px;
+        min-height      : 101px;
         margin          : auto auto;
         background      : rgba(255, 255, 255, 0.26);
       }
 
+      #submitTweets > label {
+        display         : block;
+        width           : 80%;
+        margin          : auto auto;
+      }
+
+      #charCount {
+        position        : absolute;
+        bottom          : 60px;
+        right           : 12%;  
+      }
+
       #submitTweets > button {
         float           : right;
-        margin-right    : 10%;
-        margin-bottom   : 30px;
+        margin          : 10px 10% 30px 0px; 
+        background      : rgba(0, 0, 255, 0.452);
+        border-color    : black;
+      }
+
+      #submitTweets > label {
+        font-size : 1.3em;
+        text-decoration: underline;
+      }
+
+      .red {
+        color : red;
       }
 
     </style>
@@ -135,7 +163,7 @@
           var tweet = stream[index];
           var $tweet = $('<li class="tweet"></li>');
           var $tweetTime = moment(tweet.created_at).fromNow();
-          $tweet.html('<span class="user" id=' + tweet.user + '>@' + tweet.user + ':</span> ' +
+          $tweet.html('<span class="user ' + tweet.user + '" id=' + tweet.user + '>@' + tweet.user + ':</span> ' +
                       tweet.message + ' . ' +
                       '<p id = ' + index + ' class ="tweetTime">' + $tweetTime + '</p>');
           $('#tweets').prepend($tweet);
@@ -156,14 +184,33 @@
         })
       }
 
+      function updateTweetLength () {
+        var length = $('#submitTweets').find('textarea').val().length;
+        var $charCount = $('#charCount');
+        if (length > 280 && !$charCount.hasClass('red')) {
+          $charCount.addClass('red');
+          $('#submitTweets > button').attr('disabled', 'disabled');
+        } else if (length < 280 && $charCount.hasClass('red')) {
+          $charCount.removeClass('red');
+          $('#submitTweets > button').removeAttr('disabled');
+        }
+        $('#tweetLength').text(length);
+      }
+
       function logInOut () {
         $('#logInForm').toggle();
         $('#logOutDiv').toggle();
         $('#submitTweets').toggle();
+        $('#submitTweets').find('textarea').val('');
+        $('#tweetLength').text(0);
       }
 
       $(document).ready(function(){
-        loadTweets();        
+        loadTweets();   
+        updateTweetLength();
+        $('#submitTweets').find('textarea').val('');
+        $('#tweetLength').text(0);    
+        $('#userNameInput').val(''); 
       });
       
       $('body').on('click', '#home', function(){
@@ -181,7 +228,7 @@
       });
 
       $('body').on('click', '.user', function(){
-        var user = $(this).context.id;
+        var user = $(this).context.classList[1];
         if (!$('#newTweets').hasClass(user)) {
           $('#newTweets').addClass(user);
         }
@@ -212,6 +259,10 @@
         loadTweets();
       })
 
+      $("body").on("input", "#submitTweets", function(){
+        updateTweetLength ();
+      })
+
     </script>
     <div id="container">
       <form id="logInForm">
@@ -225,8 +276,9 @@
       </div>
       <h1 id="home">Twitter</h1> 
       <form id="submitTweets">
-        <label></label>
+        <label>Submit a Tweet:</label>
         <textArea></textArea>
+        <span id="charCount"><span id="tweetLength">0</span>/280</span>
         <button>Tweet!</button>
       </form>
       <button id="newTweets">More New Tweets<span id='newTweetsName'></span>!</button>

@@ -6,143 +6,170 @@
     <script src="data_generator.js"></script>
     <style>
       body {
-        background      : #e2e1e1d5;
-        height          : 90vh;
+        background        : #e2e1e1d5;
+        height            : 90vh;
       }
 
       #container {
-        width           : 600px;
-        margin          : auto;
-        background      : rgba(163, 185, 247, 0.337);
-        min-height      : 100%;
-        padding-bottom  : 20px;
+        width             : 600px;
+        margin            : auto;
+        background        : rgba(163, 185, 247, 0.337);
+        min-height        : 100%;
+        padding-bottom    : 20px;
       }
 
       #tweets {
-        width           : 80%;
-        margin          : auto auto;
-        padding-left    : 0px;
+        width             : 80%;
+        margin            : auto auto;
+        padding-left      : 0px;
       }
 
       .tweet {
-        margin          : 10px auto 10px auto;
-        padding         : 2px;
-        border          : 2px solid black;
-        border-radius   : 10px;
-        list-style-type : none;
-        overflow-wrap   : break-word;
+        margin            : 10px auto 10px auto;
+        padding           : 2px;
+        border            : 2px solid black;
+        border-radius     : 10px;
+        list-style-type   : none;
+        overflow-wrap     : break-word;
       }
 
       .tweet:hover {
-        background      : rgba(255, 255, 66, 0.438);
+        background        : rgba(255, 255, 66, 0.438);
       }
 
       #home {
-        text-align      : center;
-        font-size       : 2.4em; 
-        letter-spacing  : .6em; 
+        width             : 315px;
+        margin            : auto;
       }
 
       #home:hover {
-        text-decoration : underline;
-        cursor          : pointer;
+        background        : rgba(255, 255, 66, 0.438);
+        cursor            : pointer;
       }
 
       .user {
-        font-weight     : 600;
+        font-weight       : 600;
       }
 
       .user:hover {
-        text-decoration : underline; 
-        cursor          : pointer;
+        text-decoration   : underline; 
+        cursor            : pointer;
       }
 
       .tweetTime {
-        text-align      : right;
-        font-style      : italic;
-        margin          : 0px 0px 2px 0px;
-        font-size       : .8em;    
+        text-align        : right;
+        font-style        : italic;
+        margin            : 0px 0px 2px 0px;
+        font-size         : .8em;    
       }
 
       #newTweets {
-        width           : 80%;
-        margin          : auto;
-        display         : block;
-        padding         : auto auto;
-        background      : rgba(0, 0, 255, 0.452);
-        border-color    : black;
-        border-radius   : 10px;
+        width             : 80%;
+        margin            : auto;
+        display           : block;
+        padding           : auto auto;
+        background        : rgba(0, 0, 255, 0.452);
+        border-color      : black;
+        border-radius     : 10px;
       }
 
       #newTweets:hover {
-       cursor           : pointer; 
-       background       : rgba(0, 0, 255, 0.226);
+       cursor             : pointer; 
+       background         : rgba(255, 255, 66, 0.438);
       }
 
       #logInForm {
-        padding         : 5px 5px 5px 0px;
-        height          : 25px;
-        text-align      : right;
-        background      : rgba(9, 9, 102, 0.568);
+        padding           : 5px 5px 5px 0px;
+        height            : 25px;
+        text-align        : right;
+        background        : rgba(9, 9, 102, 0.568);
       }
 
       #logOutDiv {
-        padding         : 5px 5px 5px 0px;
-        height          : 25px;
-        text-align      : right;
-        background      : rgba(9, 9, 102, 0.568);
-        display         : none;
+        padding           : 5px 5px 5px 0px;
+        height            : 25px;
+        text-align        : right;
+        background        : rgba(9, 9, 102, 0.568);
+        display           : none;
       }
 
       #userName {
-        font-size       : 1.2em;
-        letter-spacing  : .12em; 
-        text-align      : center;
+        font-size         : 1.2em;
+        letter-spacing    : .12em; 
+        text-align        : center;
       }
 
       #submitTweets {
-        display         : none;
-        position        : relative;
-        overflow        : hidden;
+        display           : none;
+        position          : relative;
+        overflow          : hidden;
       }
 
       #submitTweets > textArea {
-        display         : block;
-        max-width       : 80%;
-        min-width       : 80%;
-        height          : 101px;
-        min-height      : 101px;
-        margin          : auto auto;
-        background      : rgba(255, 255, 255, 0.26);
+        display           : block;
+        max-width         : 80%;
+        min-width         : 80%;
+        height            : 101px;
+        min-height        : 101px;
+        margin            : auto auto;
+        background        : rgba(255, 255, 255, 0.26);
       }
 
       #submitTweets > label {
-        display         : block;
-        width           : 80%;
-        margin          : auto auto;
+        display           : block;
+        width             : 80%;
+        margin            : auto auto;
       }
 
       #charCount {
-        position        : absolute;
-        bottom          : 60px;
-        right           : 12%;  
+        position          : absolute;
+        bottom            : 60px;
+        right             : 12%;  
       }
 
       #submitTweets > button {
-        float           : right;
-        margin          : 10px 10% 30px 0px; 
-        background      : rgba(0, 0, 255, 0.452);
-        border-color    : black;
+        float             : right;
+        margin            : 10px 10% 30px 0px; 
+        background        : rgba(0, 0, 255, 0.452);
+        border-color      : black;
       }
 
       #submitTweets > label {
-        font-size : 1.3em;
-        text-decoration: underline;
+        font-size         : 1.3em;
+        text-decoration   : underline;
       }
 
       .red {
-        color : red;
+        color             : red;
       }
+
+      .title {
+        display           :inline-block;
+        overflow          :hidden;
+        text-align        : center;
+        font-size         : 2.4em; 
+        letter-spacing    : .6em; 
+      }
+
+      #letterL {
+        width             : 0%;
+        overflow          : hidden;
+        animation         : 2s linear 1s infinite alternate letterL;
+        -webkit-animation : 2s linear 1s infinite alternate letterL;
+      }
+
+      @keyframes letterL {
+        0% {
+          width : 0%
+        }
+        50% {
+          width : 17px
+        }
+        100% {
+          width : 35px;
+        }
+      }
+
 
     </style>
   </head>
@@ -190,7 +217,7 @@
         if (length > 280 && !$charCount.hasClass('red')) {
           $charCount.addClass('red');
           $('#submitTweets > button').attr('disabled', 'disabled');
-        } else if (length < 280 && $charCount.hasClass('red')) {
+        } else if (length <= 280 && $charCount.hasClass('red')) {
           $charCount.removeClass('red');
           $('#submitTweets > button').removeAttr('disabled');
         }
@@ -254,8 +281,15 @@
       $('body').on('submit', '#submitTweets', function(e){
         e.preventDefault();
         var yourTweet = $(this).find('textArea');
-        writeTweet(yourTweet.val());
+        var sanitizedTxt = yourTweet.val().replace(/([@])\w+/,function(x){
+          return x = ''.concat('<span class="user ', x.slice(1),'">',x,'</span>')
+        })
+        sanitizedTxt = sanitizedTxt.replace(/(<script>)+/,function(x){
+          return x = ''.concat('<//script>')
+        })
+        writeTweet(sanitizedTxt);
         yourTweet.val('');
+        $('#tweetLength').text(0);
         loadTweets();
       })
 
@@ -274,7 +308,20 @@
           <span id='userName'></span>
           <button id="logOut">Log Out</button>
       </div>
-      <h1 id="home">Twitter</h1> 
+      <!-- <h1 id="home">Twitter</h1>  -->
+
+      <div id="home">
+        <span id='hello' class='title'>
+          Twitt
+        </span class='title'>
+        <span id="letterL" class='title'>
+          l
+        </span>
+        <span class='title'>
+          er
+        </span>
+      </div>
+
       <form id="submitTweets">
         <label>Submit a Tweet:</label>
         <textArea></textArea>
